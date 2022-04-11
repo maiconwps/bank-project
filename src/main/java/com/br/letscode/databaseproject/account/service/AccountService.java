@@ -2,6 +2,7 @@ package com.br.letscode.databaseproject.account.service;
 
 import com.br.letscode.databaseproject.account.model.Account;
 import com.br.letscode.databaseproject.account.repository.IAccountRepository;
+import com.br.letscode.databaseproject.account.projection.AccountView;
 import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
 import com.br.letscode.databaseproject.shared.exceptions.MessageError;
 import com.br.letscode.databaseproject.account.dto.request.AccountCreateRequest;
@@ -37,5 +38,11 @@ public class AccountService {
         var account = accountCreateRequest.toAccount(user);
         var accountFull = accountRepository.save(account);
         return AccountCreateResponse.of(accountFull);
+    }
+
+    public Page<AccountView> listAllAccountsByUser(Integer userId, Integer page, Integer size) throws NotFoundError {
+        var user = userService.findUserById(userId);
+        var pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "number");
+        return accountRepository.findAllByUser(user, pageRequest);
     }
 }
