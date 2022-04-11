@@ -16,8 +16,8 @@ public class AccountController {
     private AccountService accountService;
 
     @GetMapping()
-    public Page<Account> listAllAccounts(@RequestParam(required = false) Integer page,
-                                         @RequestParam(required = false) Integer size){
+    public Page<Account> listAllAccounts(@RequestParam(required = false, defaultValue = "0") Integer page,
+                                         @RequestParam(required = false, defaultValue = "10") Integer size){
         return accountService.listAllAccounts(page, size);
     }
 }
