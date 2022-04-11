@@ -24,9 +24,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public Page<User> listAllUsers(@RequestParam(required = false) String name,
-                                   @RequestParam(required = false, defaultValue = "0") int page,
-                                   @RequestParam(required = false, defaultValue = "10") int size){
+    public Page<User> listAllUsers(String name, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "name");
         return userRepository.findAll(pageRequest);
     }
