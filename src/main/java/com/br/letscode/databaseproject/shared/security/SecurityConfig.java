@@ -1,4 +1,4 @@
-package com.br.letscode.databaseproject.user.security;
+package com.br.letscode.databaseproject.shared.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
