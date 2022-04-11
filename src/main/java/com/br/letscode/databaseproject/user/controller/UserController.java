@@ -48,4 +48,9 @@ public class UserController {
         return userService.updateUser(userUpdateRequest, userId);
     }
 
+    @DeleteMapping("/{userId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable Integer userId) throws NotFoundError {
+        userService.deleteUser(userId);
+    }
 }

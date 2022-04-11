@@ -70,4 +70,9 @@ public class UserService {
         var userUpdated = userRepository.save(userOld);
         return UserUpdateResponse.of(userUpdated);
     }
+
+    public void deleteUser(Integer id) throws NotFoundError {
+        var user = this.findUserById(id);
+        userRepository.deleteById(id);
+    }
 }
