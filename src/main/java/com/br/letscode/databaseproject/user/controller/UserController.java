@@ -1,6 +1,7 @@
 package com.br.letscode.databaseproject.user.controller;
 
 import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
+import com.br.letscode.databaseproject.shared.exceptions.NotFoundError;
 import com.br.letscode.databaseproject.user.dto.request.UserCreateRequest;
 import com.br.letscode.databaseproject.user.dto.response.UserCreateResponse;
 import com.br.letscode.databaseproject.user.model.User;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -24,6 +26,11 @@ public class UserController {
                                      @RequestParam(required = false, defaultValue = "0") int page,
                                      @RequestParam(required = false, defaultValue = "3") int size){
         return userService.listAllUsers(name, page, size);
+    }
+
+    @GetMapping("/{userId}")
+    public User findUserById(@PathVariable Integer userId) throws NotFoundError {
+        return userService.findUserById(userId);
     }
 
     @PostMapping()

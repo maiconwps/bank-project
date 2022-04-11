@@ -2,6 +2,7 @@ package com.br.letscode.databaseproject.user.service;
 
 import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
 import com.br.letscode.databaseproject.shared.exceptions.MessageError;
+import com.br.letscode.databaseproject.shared.exceptions.NotFoundError;
 import com.br.letscode.databaseproject.user.dto.request.UserCreateRequest;
 import com.br.letscode.databaseproject.user.dto.response.UserCreateResponse;
 import com.br.letscode.databaseproject.user.model.User;
@@ -27,6 +28,10 @@ public class UserService {
     public Page<User> listAllUsers(String name, int page, int size){
         PageRequest pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "name");
         return userRepository.findAll(pageRequest);
+    }
+
+    public User findUserById(Integer id) throws NotFoundError {
+        return userRepository.findById(id).orElseThrow(() -> NotFoundError.notExistResourceByIdError("user", id));
     }
 
     public UserCreateResponse createUser(UserCreateRequest userCreateRequest) throws ConflictError {

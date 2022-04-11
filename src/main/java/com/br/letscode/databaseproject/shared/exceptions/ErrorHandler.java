@@ -37,8 +37,13 @@ public class ErrorHandler {
     @ResponseStatus(code =  HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictError.class)
     public List<MessageError> handlerConflictRequest(ConflictError exception){
-        List<MessageError> errors = List.of(exception.getMessageError());
-        return errors;
+        return List.of(exception.getMessageError());
+    }
+
+    @ResponseStatus(code =  HttpStatus.NOT_FOUND)
+    @ExceptionHandler(NotFoundError.class)
+    public List<MessageError> handlerNotFoundRequest(NotFoundError exception){
+        return List.of(exception.getMessageError());
     }
 
 }
