@@ -1,5 +1,6 @@
 package com.br.letscode.databaseproject.user.controller;
 
+import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
 import com.br.letscode.databaseproject.user.dto.request.UserCreateRequest;
 import com.br.letscode.databaseproject.user.dto.response.UserCreateResponse;
 import com.br.letscode.databaseproject.user.model.User;
@@ -8,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(path = "/users")
@@ -24,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping()
-    public UserCreateResponse createUser(@RequestBody UserCreateRequest userCreateRequest){
+    public UserCreateResponse createUser(@RequestBody @Valid UserCreateRequest userCreateRequest) throws ConflictError {
         return userService.createUser(userCreateRequest);
     }
 

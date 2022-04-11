@@ -1,5 +1,7 @@
 package com.br.letscode.databaseproject.user.service;
 
+import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
+import com.br.letscode.databaseproject.shared.exceptions.MessageError;
 import com.br.letscode.databaseproject.user.dto.request.UserCreateRequest;
 import com.br.letscode.databaseproject.user.dto.response.UserCreateResponse;
 import com.br.letscode.databaseproject.user.model.User;
@@ -11,6 +13,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.validation.Valid;
 
 @Service
 public class UserService {
@@ -27,7 +31,15 @@ public class UserService {
         return userRepository.findAll(pageRequest);
     }
 
-    public UserCreateResponse createUser(UserCreateRequest userCreateRequest){
+    public UserCreateResponse createUser(UserCreateRequest userCreateRequest) throws ConflictError {
+        if(userRepository.existUserWithEmail(userCreateRequest.getEmail())){
+            throw new ConflictError(new MessageError("email", "email já cadastrado"));
+        }
+
+        if(userRepository.existUserWithCpf(userCreateRequest.getCpf())){
+            throw new ConflictError(new MessageError("cpf", "cpf já cadastrado"));
+        }
+
         var user = userCreateRequest.toUser();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         var userFull = userRepository.save(userCreateRequest.toUser());
