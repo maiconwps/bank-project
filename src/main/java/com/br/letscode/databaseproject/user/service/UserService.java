@@ -4,9 +4,12 @@ import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
 import com.br.letscode.databaseproject.shared.exceptions.MessageError;
 import com.br.letscode.databaseproject.shared.exceptions.NotFoundError;
 import com.br.letscode.databaseproject.user.dto.request.UserCreateRequest;
+import com.br.letscode.databaseproject.user.dto.request.UserUpdateRequest;
 import com.br.letscode.databaseproject.user.dto.response.UserCreateResponse;
+import com.br.letscode.databaseproject.user.dto.response.UserUpdateResponse;
 import com.br.letscode.databaseproject.user.model.User;
 import com.br.letscode.databaseproject.user.repository.IUserRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -47,5 +50,24 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         var userFull = userRepository.save(userCreateRequest.toUser());
         return UserCreateResponse.of(userFull);
+    }
+
+    public UserUpdateResponse updateUser(UserUpdateRequest userUpdateRequest, Integer id) throws ConflictError, NotFoundError {
+        var userOld = this.findUserById(id);
+
+        var email = userUpdateRequest.getEmail();
+        var cpf = userUpdateRequest.getCpf();
+
+        if (!userOld.getEmail().equals(email) && userRepository.existUserWithEmail(email)){
+            throw new ConflictError(new MessageError("email", "email já cadastrado"));
+        }
+
+        if(!userOld.getCpf().equals(cpf) && userRepository.existUserWithCpf(cpf)){
+            throw new ConflictError(new MessageError("cpf", "cpf já cadastrado"));
+        }
+
+        BeanUtils.copyProperties(userUpdateRequest, userOld);
+        var userUpdated = userRepository.save(userOld);
+        return UserUpdateResponse.of(userUpdated);
     }
 }
