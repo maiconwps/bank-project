@@ -71,4 +71,9 @@ public class AccountService {
         var accountFull = accountRepository.save(accountOld);
         return AccountUpdateResponse.of(accountFull);
     }
+
+    public void deleteAccount(Integer id) throws NotFoundError {
+        var accountOld = this.findAccountById(id);
+       accountRepository.deleteById(id);
+    }
 }

@@ -10,6 +10,7 @@ import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
 import com.br.letscode.databaseproject.shared.exceptions.NotFoundError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +33,7 @@ public class AccountController {
     }
 
     @PostMapping()
+    @ResponseStatus(HttpStatus.CREATED)
     public AccountCreateResponse createAccount(@RequestBody @Valid AccountCreateRequest accountCreateRequest) throws ConflictError, NotFoundError {
         return accountService.createAccount(accountCreateRequest);
     }
@@ -40,5 +42,11 @@ public class AccountController {
     public AccountUpdateResponse updateAccountById(@RequestBody AccountUpdateRequest accountUpdateRequest,
                                                    @PathVariable Integer accountId) throws NotFoundError, ConflictError {
         return accountService.updateAccount(accountUpdateRequest, accountId);
+    }
+
+    @DeleteMapping("/{accountId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAccountById(@PathVariable Integer accountId) throws NotFoundError {
+        accountService.deleteAccount(accountId);
     }
 }

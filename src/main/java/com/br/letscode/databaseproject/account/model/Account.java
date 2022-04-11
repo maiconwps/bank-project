@@ -36,7 +36,7 @@ public class Account {
     @Column(name = "saldo")
     private BigDecimal balance;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private User user;
 
