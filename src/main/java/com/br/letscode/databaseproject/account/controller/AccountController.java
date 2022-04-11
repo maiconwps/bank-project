@@ -24,6 +24,11 @@ public class AccountController {
         return accountService.listAllAccounts(page, size);
     }
 
+    @GetMapping("/{accountId}")
+    public Account findAccountById(@PathVariable Integer accountId) throws NotFoundError {
+        return accountService.findAccountById(accountId);
+    }
+
     @PostMapping()
     public AccountCreateResponse createAccount(@RequestBody @Valid AccountCreateRequest accountCreateRequest) throws ConflictError, NotFoundError {
         return accountService.createAccount(accountCreateRequest);

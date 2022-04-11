@@ -28,6 +28,10 @@ public class AccountService {
         return accountRepository.findAll(pageRequest);
     }
 
+    public Account findAccountById(Integer id) throws NotFoundError {
+        return accountRepository.findById(id).orElseThrow(() -> NotFoundError.notExistResourceByIdError("account", id));
+    }
+
     public AccountCreateResponse createAccount(AccountCreateRequest accountCreateRequest) throws NotFoundError, ConflictError {
         var user = userService.findUserById(accountCreateRequest.getUserId());
 
