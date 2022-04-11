@@ -33,10 +33,9 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
 
-    @Column(name = "valor")
-    private BigDecimal value;
+    @Column(name = "saldo")
+    private BigDecimal balance;
 
-    @Column(name = "user")
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id", referencedColumnName = "id")
     private User user;
