@@ -3,7 +3,6 @@ package com.br.letscode.databaseproject.user.dto.request;
 import com.br.letscode.databaseproject.user.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.beans.BeanUtils;
 
 import javax.validation.constraints.*;

@@ -1,7 +1,6 @@
 package com.br.letscode.databaseproject.user.dto.response;
 
 import com.br.letscode.databaseproject.user.model.User;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
