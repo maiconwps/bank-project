@@ -1,7 +1,9 @@
 package com.br.letscode.databaseproject.account.controller;
 
 import com.br.letscode.databaseproject.account.dto.request.AccountCreateRequest;
+import com.br.letscode.databaseproject.account.dto.request.AccountUpdateRequest;
 import com.br.letscode.databaseproject.account.dto.response.AccountCreateResponse;
+import com.br.letscode.databaseproject.account.dto.response.AccountUpdateResponse;
 import com.br.letscode.databaseproject.account.model.Account;
 import com.br.letscode.databaseproject.account.service.AccountService;
 import com.br.letscode.databaseproject.shared.exceptions.ConflictError;
@@ -32,5 +34,11 @@ public class AccountController {
     @PostMapping()
     public AccountCreateResponse createAccount(@RequestBody @Valid AccountCreateRequest accountCreateRequest) throws ConflictError, NotFoundError {
         return accountService.createAccount(accountCreateRequest);
+    }
+
+    @PutMapping("/{accountId}")
+    public AccountUpdateResponse updateAccountById(@RequestBody AccountUpdateRequest accountUpdateRequest,
+                                                   @PathVariable Integer accountId) throws NotFoundError, ConflictError {
+        return accountService.updateAccount(accountUpdateRequest, accountId);
     }
 }
