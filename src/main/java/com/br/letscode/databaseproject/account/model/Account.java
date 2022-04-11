@@ -24,7 +24,7 @@ public class Account {
     private Integer id;
 
     @Column(name = "numero")
-    private String number;
+    private Integer number;
 
     @Column(name = "agencia")
     private Integer agency;
