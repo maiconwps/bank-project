@@ -14,7 +14,7 @@ public class AccountService {
     private IAccountRepository accountRepository;
 
     public Page<Account> listAllAccounts(Integer page, Integer size){
-        var pageRequest = PageRequest.of(page, size, Sort.Direction.DESC);
+        var pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "number");
         return accountRepository.findAll(pageRequest);
     }
 }
