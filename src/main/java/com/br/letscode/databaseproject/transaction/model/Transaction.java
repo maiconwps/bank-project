@@ -1,7 +1,6 @@
-package com.br.letscode.databaseproject.account.model;
+package com.br.letscode.databaseproject.transaction.model;
 
-import com.br.letscode.databaseproject.shared.exceptions.SemanticError;
-import com.br.letscode.databaseproject.user.model.User;
+import com.br.letscode.databaseproject.account.model.Account;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,16 +12,23 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Table(name = "conta")
+@Table(name = "transacao")
 @Entity
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-public class Account {
+public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "valor")
+    private BigDecimal value;
+
+    @Column(name = "tipo_transacao")
+    @Enumerated(EnumType.STRING)
+    private TransactionType transactionType;
 
     @Column(name = "numero")
     private Integer number;
@@ -30,17 +36,9 @@ public class Account {
     @Column(name = "agencia")
     private Integer agency;
 
-    @Column(name = "tipo_conta")
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
-
-    @Column(name = "saldo")
-    private BigDecimal balance;
-
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id")
-    private User user;
-
+    @JoinColumn(name = "conta_id", referencedColumnName = "id")
+    private Account account;
 
     @Column(name = "data_criacao")
     @CreatedDate
@@ -49,15 +47,4 @@ public class Account {
     @Column(name = "data_atualizacao")
     @LastModifiedDate
     private LocalDateTime updateDate;
-
-    public void withdraw(BigDecimal value) throws SemanticError {
-        if(value.compareTo(this.balance) > 0){
-            throw new SemanticError("balance", "Saldo insuficiente");
-        }
-        this.balance = this.balance.subtract(value);
-    }
-
-    public void deposit(BigDecimal value) {
-        this.balance = this.balance.add(value);
-    }
 }
