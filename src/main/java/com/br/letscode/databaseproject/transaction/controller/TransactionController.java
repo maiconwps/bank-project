@@ -5,6 +5,7 @@ import com.br.letscode.databaseproject.shared.exceptions.SemanticError;
 import com.br.letscode.databaseproject.transaction.dto.TransactionCreateRequest;
 import com.br.letscode.databaseproject.transaction.dto.TransactionCreateResponse;
 import com.br.letscode.databaseproject.transaction.model.Transaction;
+import com.br.letscode.databaseproject.transaction.model.TransactionType;
 import com.br.letscode.databaseproject.transaction.projection.TransactionView;
 import com.br.letscode.databaseproject.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,9 @@ public class TransactionController {
 
     @GetMapping()
     public Page<TransactionView> getAllTransactionsByAccountId(@PathVariable Integer accountId,
+                                                               @RequestParam(required = false) TransactionType type,
                                                                @RequestParam(required = false, defaultValue = "0") Integer page,
                                                                @RequestParam(required = false, defaultValue = "10") Integer size) throws NotFoundError {
-        return transactionService.getAllUserTransactions(accountId, page, size);
+        return transactionService.getAllUserTransactions(accountId, type, page, size);
     }
 }

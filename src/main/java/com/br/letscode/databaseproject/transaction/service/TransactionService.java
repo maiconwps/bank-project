@@ -1,13 +1,12 @@
 package com.br.letscode.databaseproject.transaction.service;
 
-import com.br.letscode.databaseproject.account.model.Account;
 import com.br.letscode.databaseproject.account.repository.IAccountRepository;
 import com.br.letscode.databaseproject.account.service.AccountService;
 import com.br.letscode.databaseproject.shared.exceptions.NotFoundError;
 import com.br.letscode.databaseproject.shared.exceptions.SemanticError;
 import com.br.letscode.databaseproject.transaction.dto.TransactionCreateRequest;
 import com.br.letscode.databaseproject.transaction.dto.TransactionCreateResponse;
-import com.br.letscode.databaseproject.transaction.model.Transaction;
+import com.br.letscode.databaseproject.transaction.model.TransactionType;
 import com.br.letscode.databaseproject.transaction.projection.TransactionView;
 import com.br.letscode.databaseproject.transaction.repository.ITransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.awt.print.Pageable;
 
 @Service
 public class TransactionService {
@@ -46,9 +43,12 @@ public class TransactionService {
         return TransactionCreateResponse.of(transaction);
     }
 
-    public Page<TransactionView> getAllUserTransactions(Integer accountId, Integer page, Integer size) throws NotFoundError {
+    public Page<TransactionView> getAllUserTransactions(Integer accountId, TransactionType transactionType, Integer page, Integer size) throws NotFoundError {
         var account = accountService.findAccountById(accountId);
         var pageRequest = PageRequest.of(page, size, Sort.Direction.DESC, "creationDate");
-        return transactionRepository.findAllByAccount(account, pageRequest);
+        if(transactionType == null)
+            return transactionRepository.findAllByAccount(account, pageRequest);
+        else
+            return transactionRepository.findAllByAccountAndTransactionType(account, transactionType, pageRequest);
     }
 }
