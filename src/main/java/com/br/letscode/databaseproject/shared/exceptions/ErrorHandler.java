@@ -34,6 +34,12 @@ public class ErrorHandler {
         return errors;
     }
 
+    @ResponseStatus(code =  HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SemanticError.class)
+    public List<MessageError> handlerBadRequests(SemanticError exception){
+        return List.of(exception.getMessageError());
+    }
+
     @ResponseStatus(code =  HttpStatus.CONFLICT)
     @ExceptionHandler(ConflictError.class)
     public List<MessageError> handlerConflictRequest(ConflictError exception){
